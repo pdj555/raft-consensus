@@ -1,106 +1,86 @@
-# 🏛️ Distributed Consensus System
+# Distributed Consensus System
 
-A **production-grade, fault-tolerant Raft consensus implementation** built with Java 21 LTS and designed for excellence.
+Modular Raft implementation in Java 21. The codebase separates pure consensus logic from transport, storage, and operational tooling so each layer can be tested and evolved independently.
 
-## 🎯 Project Mission
+## Module architecture
 
-Build a distributed consensus system that achieves:
+```mermaid
+flowchart TB
+  subgraph Modules
+    CORE[raft-core<br/>Raft algorithm]
+    TRANS[raft-transport<br/>Netty + codecs]
+    STORE[raft-storage<br/>Log + snapshots]
+    CLI[raft-cli<br/>Admin + stress]
+    INT[raft-integtest<br/>Wire-level tests]
+  end
 
-- **> 95% cluster availability** under network partitions
-- **< 150ms p99 commit latency** for 1KB entries at 1,000 ops/s  
-- **Zero-downtime leader transitions**
-- **Military-grade reliability** with comprehensive testing
-
-## 🛠️ Technology Stack
-
-### Runtime Requirements
-
-| Component | Version | Rationale |
-|-----------|---------|-----------|
-| **JDK** | `21 LTS` | Virtual threads for performance, ZGC for low-latency GC |
-| **Maven** | `3.9.x` | Modern build toolchain with improved dependency resolution |
-
-### Core Dependencies
-
-- **Transport**: Netty 4 (boss/worker thread groups)
-- **Persistence**: Memory-mapped files + RocksDB snapshots  
-- **Concurrency**: Single-threaded RaftCore + Disruptor ring buffer
-- **Protocol**: Custom binary frames over TCP + Protobuf serialization
-- **Testing**: JUnit 5 + AssertJ + jqwik + TestContainers
-- **Observability**: SLF4J 2 + Logback JSON + Micrometer
-
-## 🏗️ Architecture
+  CORE --> TRANS
+  CORE --> STORE
+  CLI --> CORE
+  INT --> TRANS
+  INT --> STORE
+```
 
 ```text
 raft-parent/
-├── raft-core/      # Pure Raft algorithm (no I/O)
-├── raft-transport/ # Netty networking + message codecs  
-├── raft-storage/   # Log segments + snapshot management
-├── raft-cli/       # Admin tools + stress testing
-└── raft-integtest/ # End-to-end wire-level tests
+├── raft-core/       Pure Raft (no I/O)
+├── raft-transport/  Netty networking + message codecs
+├── raft-storage/    Log segments + snapshot management
+├── raft-cli/        Admin tools + stress testing
+└── raft-integtest/  End-to-end integration tests
 ```
 
-## 🚀 Quick Start
+## Raft lifecycle
 
-### Prerequisites
+```mermaid
+stateDiagram-v2
+  [*] --> Follower
+  Follower --> Candidate: election timeout
+  Candidate --> Leader: majority votes
+  Candidate --> Follower: discover higher term
+  Leader --> Follower: discover higher term
+  Leader --> Leader: replicate log entries
+  Follower --> Follower: append from leader
+```
 
-- JDK 21 LTS installed
-- Maven 3.9.x installed
+## Technology
 
-### Build
+| Layer | Choice |
+| --- | --- |
+| Runtime | JDK 21 LTS |
+| Build | Maven 3.9.x |
+| Transport | Netty 4 |
+| Persistence | Memory-mapped segments + RocksDB snapshots |
+| Testing | JUnit 5, AssertJ, jqwik, TestContainers |
+| Observability | SLF4J, Logback JSON, Micrometer |
+
+## Quick start
 
 ```bash
-# Clone the repository
-git clone https://github.com/your-org/distributed-consensus-system.git
+git clone https://github.com/pdj555/distributed-consensus-system.git
 cd distributed-consensus-system
 
-# Build all modules
 mvn clean verify
-
-# Run tests
 mvn test
-
-# Start a 5-node cluster (coming soon)
-java -jar raft-cli/target/raft-cli.jar cluster start
 ```
 
-## 📋 Development
-
-### Code Quality Standards
-
-This project maintains **zero-tolerance** for quality regressions:
+## Quality gates
 
 ```bash
-mvn spotbugs:check     # Zero HIGH findings
-mvn checkstyle:check   # Zero violations  
-mvn compile            # Zero ErrorProne errors
+mvn checkstyle:check
+mvn spotbugs:check
+mvn test -DskipITs=true
 ```
 
-### Performance Requirements
+## Documentation
 
-- **Throughput**: 1,000+ operations/second sustained
-- **Latency**: p99 < 150ms for 1KB entries
-- **Availability**: > 95% during network partitions
-- **Recovery**: < 100ms segment index rebuild for 1M entries
+| Document | Contents |
+| --- | --- |
+| [docs/constitution.md](docs/constitution.md) | Engineering principles |
+| [docs/design.md](docs/design.md) | Implementation blueprint |
+| [docs/issues.md](docs/issues.md) | Tracked work items |
+| [docs/adr/](docs/adr/) | Architecture decision records |
 
-## 📚 Documentation
+## License
 
-- **🏛️ [Constitution](docs/constitution.md)** - Coding standards and principles
-- **📐 [Design](docs/design.md)** - Complete 7-phase implementation plan  
-- **🎯 [Issues](docs/issues.md)** - 45+ ready-to-implement GitHub issues
-- **📁 [ADRs](docs/adr/)** - Architecture Decision Records
-
-## 🤝 Contributing
-
-1. Read the [Constitution](docs/constitution.md) - our immutable principles
-2. Follow the [Design Blueprint](docs/design.md) - exact implementation phases
-3. Every PR requires 2 reviewer approvals
-4. All quality gates must pass (static analysis + tests)
-
-## 📜 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
----
-
-*"Simplicity is the ultimate sophistication. Details are not details. They make the design."* — Steve Jobs
+MIT. See [LICENSE](LICENSE).
