@@ -12,7 +12,7 @@
 
     <name>Raft Consensus - Parent</name>
     <description>Production-grade fault-tolerant Raft consensus implementation</description>
-    <url>https://github.com/your-org/distributed-consensus-system</url>
+    <url>https://github.com/pdj555/raft-consensus</url>
 
     <properties>
         <!-- Java & Maven versions as documented in constitution -->

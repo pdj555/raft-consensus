@@ -1,4 +1,4 @@
-# Distributed Consensus System
+# Raft Consensus
 
 Raft in Java 21. Pure algorithm, separate transport, storage, and tooling.
 
@@ -21,8 +21,8 @@ stateDiagram-v2
 ## Get started
 
 ```bash
-git clone https://github.com/pdj555/distributed-consensus-system.git
-cd distributed-consensus-system
+git clone https://github.com/pdj555/raft-consensus.git
+cd raft-consensus
 mvn clean verify
 ```
 
