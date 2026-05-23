@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, Syne } from "next/font/google";
+import { IBM_Plex_Mono, Inter } from "next/font/google";
 import { brand } from "@/lib/brand";
 import "./globals.css";
 
-const syne = Syne({
-  variable: "--font-syne",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  weight: ["400", "500", "600"],
 });
 
 const ibmPlexMono = IBM_Plex_Mono({
@@ -37,8 +37,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${syne.variable} ${ibmPlexMono.variable} h-full`}>
-      <body className="min-h-full bg-bg antialiased">{children}</body>
+    <html lang="en" className={`${inter.variable} ${ibmPlexMono.variable} h-full`}>
+      <body className="min-h-full bg-bg font-sans antialiased">{children}</body>
     </html>
   );
 }

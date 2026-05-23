@@ -60,12 +60,12 @@ export function Architecture() {
               className="panel p-4 transition-colors duration-200 hover:border-border-bright"
             >
               <div className="flex items-start justify-between gap-3">
-                <h3 className="text-[12px] font-medium text-text">{mod.name}</h3>
-                <span className="label-caps border border-border px-2 py-0.5 text-[9px]">
+                <h3 className="text-[15px] font-medium text-text">{mod.name}</h3>
+                <span className="label-caps rounded-full border border-border px-2.5 py-0.5 text-[9px]">
                   {mod.tag}
                 </span>
               </div>
-              <p className="mt-3 text-[12px] leading-relaxed text-text-muted">{mod.description}</p>
+              <p className="mt-3 text-[14px] leading-relaxed text-text-muted">{mod.description}</p>
               {mod.deps.length > 0 && (
                 <p className="mt-4 text-[10px] text-text-faint">depends on {mod.deps.join(", ")}</p>
               )}
@@ -73,7 +73,7 @@ export function Architecture() {
           ))}
         </div>
 
-        <div className="panel-inset mt-8 p-5">
+        <div className="panel-inset mt-8 p-5 font-mono">
           <p className="label-caps mb-3">Quick start</p>
           <pre className="overflow-x-auto text-[11px] leading-[1.8] text-text-muted">
             <code>

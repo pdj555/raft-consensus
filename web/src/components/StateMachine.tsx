@@ -75,8 +75,8 @@ export function StateMachine() {
                       aria-hidden="true"
                     />
                     <div>
-                      <p className="text-[12px] font-medium text-text">{state.label}</p>
-                      <p className="mt-1 text-[11px] leading-relaxed text-text-muted">
+                      <p className="text-[15px] font-medium text-text">{state.label}</p>
+                      <p className="mt-1.5 text-[14px] leading-relaxed text-text-muted">
                         {state.description}
                       </p>
                     </div>
@@ -110,7 +110,7 @@ export function StateMachine() {
               ))}
             </div>
 
-            <div className="panel-inset mt-5 p-3.5 text-[11px] leading-relaxed text-text-muted">
+            <div className="panel-inset mt-5 p-4 font-mono text-[11px] leading-relaxed text-text-muted">
               <span className="text-text-faint">$</span> mvn test -DskipITs=true
               <br />
               <span className="text-text-faint">RaftLogTest · DefaultRaftNodeClusterTest</span>

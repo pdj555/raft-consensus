@@ -15,7 +15,7 @@ export function TelemetryStrip({ cluster }: { cluster: ClusterSnapshot }) {
   const leader = cluster.nodes.find((n) => n.id === cluster.leaderId)?.id;
 
   return (
-    <div className="sticky top-12 z-30 border-b border-border bg-bg">
+    <div className="sticky top-14 z-30 border-b border-border bg-bg/95 backdrop-blur-sm font-mono">
       <div className="section-shell flex items-center gap-3 overflow-x-auto py-2.5 scrollbar-hide sm:gap-4">
         <span className="flex shrink-0 items-center gap-2 pr-2 label-caps text-text">
           <span className="h-1 w-1 bg-text animate-pulse-live" />

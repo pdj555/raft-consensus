@@ -20,7 +20,7 @@ export function Header() {
   const [active, setActive] = useState("cluster");
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 4);
+    const onScroll = () => setScrolled(window.scrollY > 8);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -43,17 +43,19 @@ export function Header() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-40 border-b transition-colors duration-300 ${
-        scrolled ? "border-border bg-bg" : "border-transparent bg-bg/80"
+      className={`fixed inset-x-0 top-0 z-40 border-b transition-[background-color,border-color,backdrop-filter] duration-300 ${
+        scrolled
+          ? "border-border bg-bg/90 backdrop-blur-md"
+          : "border-transparent bg-bg/70 backdrop-blur-sm"
       }`}
     >
-      <div className="section-shell flex h-12 items-center justify-between gap-3">
-        <a href="#main" className="flex shrink-0 items-center gap-2.5">
+      <div className="section-shell flex h-14 items-center justify-between gap-4">
+        <a href="#main" className="flex shrink-0 items-center gap-2.5 text-[15px] font-semibold tracking-[-0.02em] text-text">
           <BrandMark />
-          <span className="label-caps text-text">Raft</span>
+          Raft
         </a>
 
-        <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+        <div className="flex min-w-0 items-center gap-1 sm:gap-2">
           <nav
             aria-label="Sections"
             className="flex min-w-0 items-center overflow-x-auto scrollbar-hide"
@@ -63,14 +65,14 @@ export function Header() {
                 key={link.href}
                 href={link.href}
                 data-active={active === link.href.slice(1) ? "true" : "false"}
-                className="nav-link label-caps px-2 py-1.5 text-text-muted transition-colors hover:text-text sm:px-3"
+                className="nav-link px-3 py-2 text-[14px] text-text-muted transition-colors hover:text-text"
               >
                 {link.label}
               </a>
             ))}
           </nav>
 
-          <span className="divider-v hidden h-3 shrink-0 sm:block" aria-hidden="true" />
+          <span className="divider-v mx-1 hidden h-4 shrink-0 sm:block" aria-hidden="true" />
 
           <nav aria-label="External links" className="hidden shrink-0 items-center sm:flex">
             {externalLinks.map((link) => (
@@ -79,7 +81,7 @@ export function Header() {
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="nav-link label-caps px-2 py-1.5 text-text-faint transition-colors hover:text-text-muted sm:px-3"
+                className="nav-link px-3 py-2 text-[14px] text-text-faint transition-colors hover:text-text-muted"
               >
                 {link.label}
               </a>

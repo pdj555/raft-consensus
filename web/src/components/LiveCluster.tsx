@@ -161,7 +161,7 @@ function NodeDetail({ node, isLeader }: { node: ClusterNode; isLeader: boolean }
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="label-caps">Selected</p>
-          <p className="mt-1 font-display text-lg font-semibold tracking-[-0.02em] text-text">
+          <p className="mt-1 text-lg font-semibold tracking-[-0.02em] text-text">
             {node.id}
           </p>
           <p className="mt-0.5 text-[11px] text-text-muted">{node.region}</p>
@@ -284,13 +284,14 @@ export function LiveCluster() {
 
   return (
     <section id="cluster" className="section-anchor bg-bg">
-      <div className="section-shell border-b border-border pt-16 pb-5">
-        <p className="label-caps">Raft consensus</p>
-        <h1 className="mt-3 font-display text-[clamp(1.75rem,4vw,2.75rem)] font-semibold tracking-[-0.04em] text-text">
-          Distributed replication
+      <div className="section-shell border-b border-border pb-10 pt-[calc(3.5rem+2.5rem)]">
+        <p className="label-caps animate-fade-up">Raft consensus</p>
+        <h1 className="hero-title mt-4 animate-fade-up text-text">
+          Distributed replication, live.
         </h1>
-        <p className="mt-3 max-w-xl text-[11px] leading-relaxed text-text-muted">
-          Pure Raft in Java 21 — leader election, log replication, and commit advancement.
+        <p className="hero-lede mt-5 animate-fade-up">
+          Pure Raft in Java 21 — leader election, log replication, and commit advancement. HUD below
+          runs in real time.
         </p>
       </div>
 

@@ -24,7 +24,7 @@ export function LoadingGate({ children }: { children: ReactNode }) {
           }`}
           aria-hidden={phase === "fading"}
         >
-          <p className="text-[13px] tracking-[0.02em] text-text-muted">loading...</p>
+          <p className="text-[15px] tracking-[0.01em] text-text-muted">loading...</p>
         </div>
       )}
     </>
