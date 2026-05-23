@@ -1,3 +1,6 @@
+import { AuthorCredit } from "@/components/AuthorCredit";
+import { brand } from "@/lib/brand";
+
 export function Hero() {
   return (
     <section className="relative overflow-hidden border-b border-border pt-32 pb-16">
@@ -5,6 +8,7 @@ export function Hero() {
 
       <div className="section-shell relative">
         <div className="animate-fade-up max-w-3xl">
+          <AuthorCredit className="mb-5" />
           <p className="label-caps mb-5">Distributed replication</p>
           <h1 className="font-display text-[clamp(2.5rem,6vw,4.25rem)] font-semibold leading-[1.02] tracking-[-0.04em] text-text">
             Consensus,
@@ -15,6 +19,23 @@ export function Hero() {
             Pure Raft in Java 21. Algorithm isolated from I/O. Netty transport,
             memory-mapped segments, sub-150ms commit targets.
           </p>
+
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <a
+              href="#cluster"
+              className="label-caps inline-flex items-center rounded-md border border-accent/35 bg-accent/[0.06] px-4 py-2 text-accent transition-colors hover:border-accent/55 hover:bg-accent/[0.1]"
+            >
+              View cluster
+            </a>
+            <a
+              href={brand.links.portfolio}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="label-caps inline-flex items-center rounded-md border border-border px-4 py-2 text-text-muted transition-colors hover:border-border-bright hover:text-text"
+            >
+              Portfolio
+            </a>
+          </div>
         </div>
 
         <dl className="animate-fade-up stagger-2 mt-14 flex flex-wrap gap-x-10 gap-y-4 border-t border-border pt-8">

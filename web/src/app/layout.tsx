@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, Syne } from "next/font/google";
+import { brand } from "@/lib/brand";
 import "./globals.css";
 
 const syne = Syne({
@@ -15,13 +16,18 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Raft Consensus — Distributed Replication",
-  description:
-    "Modular Raft consensus in Java 21. Pure algorithm, Netty transport, memory-mapped storage.",
+  title: `${brand.project.name} — ${brand.person.name}`,
+  description: brand.project.tagline,
+  authors: [{ name: brand.person.name, url: brand.links.portfolio }],
+  creator: brand.person.name,
+  icons: {
+    icon: "/favicon.svg",
+  },
   openGraph: {
-    title: "Raft Consensus",
-    description: "Live cluster visualization and distributed replication research.",
+    title: brand.project.name,
+    description: `${brand.project.tagline} · ${brand.person.name}`,
     type: "website",
+    url: "https://raft-consensus-web.vercel.app",
   },
 };
 

@@ -1,12 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { BrandMark } from "@/components/BrandMark";
+import { brand } from "@/lib/brand";
 
 const links = [
   { href: "#cluster", label: "Cluster" },
   { href: "#architecture", label: "Architecture" },
   { href: "#protocol", label: "Protocol" },
-  { href: "https://github.com/pdj555/raft-consensus", label: "GitHub", external: true },
+  { href: brand.links.portfolio, label: "About", external: true },
+  { href: brand.links.repo, label: "GitHub", external: true },
 ];
 
 export function Header() {
@@ -46,12 +49,20 @@ export function Header() {
       }`}
     >
       <div className="section-shell flex h-[3.25rem] items-center justify-between">
-        <a href="#" className="flex items-center gap-2.5">
-          <span className="h-1.5 w-1.5 rounded-full bg-live" />
-          <span className="font-display text-[13px] font-semibold tracking-[-0.02em] text-text">
-            Raft
+        <a href="#" className="group flex items-center gap-3">
+          <BrandMark />
+          <span className="flex flex-col gap-0.5">
+            <span className="flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-live" />
+              <span className="font-display text-[13px] font-semibold tracking-[-0.02em] text-text">
+                Raft
+              </span>
+              <span className="label-caps hidden text-text-faint sm:inline">consensus</span>
+            </span>
+            <span className="label-caps hidden text-[9px] text-text-faint transition-colors group-hover:text-text-muted lg:inline">
+              {brand.person.name}
+            </span>
           </span>
-          <span className="label-caps hidden text-text-faint sm:inline">consensus</span>
         </a>
 
         <nav className="flex items-center gap-1">
