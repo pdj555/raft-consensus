@@ -36,7 +36,7 @@ export function Sparkline({
   const area = `${pad},${h} ${points} ${w - pad},${h}`;
 
   return (
-    <div className="px-5 py-4">
+    <div className="px-4 py-3.5">
       <div className="flex items-baseline justify-between gap-3">
         <p className="label-caps">{label}</p>
         <p className="metric-value text-lg font-medium text-text">
@@ -46,7 +46,7 @@ export function Sparkline({
       </div>
       <svg
         viewBox={`0 0 ${w} ${h}`}
-        className="mt-3 h-12 w-full opacity-90"
+        className="mt-3 h-11 w-full opacity-75"
         preserveAspectRatio="none"
         aria-hidden="true"
       >

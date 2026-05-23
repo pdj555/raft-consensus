@@ -1,12 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { BrandMark } from "@/components/BrandMark";
+import { brand } from "@/lib/brand";
 
-const links = [
+const primaryLinks = [
   { href: "#cluster", label: "Cluster" },
   { href: "#architecture", label: "Architecture" },
   { href: "#protocol", label: "Protocol" },
-  { href: "https://github.com/pdj555/raft-consensus", label: "GitHub", external: true },
+];
+
+const externalLinks = [
+  { href: brand.links.portfolio, label: "About" },
+  { href: brand.links.repo, label: "GitHub" },
 ];
 
 export function Header() {
@@ -21,10 +27,7 @@ export function Header() {
   }, []);
 
   useEffect(() => {
-    const sections = links
-      .filter((l) => !l.href.startsWith("http"))
-      .map((l) => document.querySelector(l.href));
-
+    const sections = primaryLinks.map((l) => document.querySelector(l.href));
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries
@@ -32,50 +35,59 @@ export function Header() {
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
         if (visible?.target.id) setActive(visible.target.id);
       },
-      { rootMargin: "-42% 0px -48% 0px", threshold: [0, 0.2, 0.45] },
+      { rootMargin: "-40% 0px -50% 0px", threshold: [0, 0.15, 0.35] },
     );
-
     sections.forEach((s) => s && observer.observe(s));
     return () => observer.disconnect();
   }, []);
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-40 transition-[background,border-color] duration-500 ${
-        scrolled ? "border-b border-border bg-bg/90 backdrop-blur-xl" : "border-b border-transparent bg-transparent"
+      className={`fixed inset-x-0 top-0 z-40 border-b transition-[background-color,border-color,backdrop-filter] duration-300 ${
+        scrolled
+          ? "border-border bg-bg/90 backdrop-blur-md"
+          : "border-transparent bg-bg/70 backdrop-blur-sm"
       }`}
     >
-      <div className="section-shell flex h-[3.25rem] items-center justify-between">
-        <a href="#" className="flex items-center gap-2.5">
-          <span className="h-1.5 w-1.5 rounded-full bg-live" />
-          <span className="font-display text-[13px] font-semibold tracking-[-0.02em] text-text">
-            Raft
-          </span>
-          <span className="label-caps hidden text-text-faint sm:inline">consensus</span>
+      <div className="section-shell flex h-14 items-center justify-between gap-4">
+        <a href="#main" className="flex shrink-0 items-center gap-2.5 text-[15px] font-semibold tracking-[-0.02em] text-text">
+          <BrandMark />
+          Raft
         </a>
 
-        <nav className="flex items-center gap-1">
-          {links.map((link) => {
-            const id = link.href.replace("#", "");
-            const isActive = !link.external && active === id;
-            return (
+        <div className="flex min-w-0 items-center gap-1 sm:gap-2">
+          <nav
+            aria-label="Sections"
+            className="flex min-w-0 items-center overflow-x-auto scrollbar-hide"
+          >
+            {primaryLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                target={link.external ? "_blank" : undefined}
-                rel={link.external ? "noopener noreferrer" : undefined}
-                className={`label-caps relative rounded-md px-3 py-1.5 transition-colors ${
-                  isActive ? "text-text" : "text-text-muted hover:text-text"
-                }`}
+                data-active={active === link.href.slice(1) ? "true" : "false"}
+                className="nav-link px-3 py-2 text-[14px] text-text-muted transition-colors hover:text-text"
               >
                 {link.label}
-                {isActive && (
-                  <span className="absolute inset-x-3 -bottom-[9px] h-px bg-accent/70" />
-                )}
               </a>
-            );
-          })}
-        </nav>
+            ))}
+          </nav>
+
+          <span className="divider-v mx-1 hidden h-4 shrink-0 sm:block" aria-hidden="true" />
+
+          <nav aria-label="External links" className="hidden shrink-0 items-center sm:flex">
+            {externalLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="nav-link px-3 py-2 text-[14px] text-text-faint transition-colors hover:text-text-muted"
+              >
+                {link.label}
+              </a>
+            ))}
+          </nav>
+        </div>
       </div>
     </header>
   );

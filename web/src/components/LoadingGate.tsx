@@ -6,8 +6,8 @@ export function LoadingGate({ children }: { children: ReactNode }) {
   const [phase, setPhase] = useState<"loading" | "fading" | "done">("loading");
 
   useEffect(() => {
-    const fade = window.setTimeout(() => setPhase("fading"), 600);
-    const done = window.setTimeout(() => setPhase("done"), 1100);
+    const fade = window.setTimeout(() => setPhase("fading"), 500);
+    const done = window.setTimeout(() => setPhase("done"), 950);
     return () => {
       window.clearTimeout(fade);
       window.clearTimeout(done);
@@ -24,12 +24,7 @@ export function LoadingGate({ children }: { children: ReactNode }) {
           }`}
           aria-hidden={phase === "fading"}
         >
-          <div className="text-center">
-            <p className="font-display text-[11px] font-medium tracking-[0.32em] text-text-muted uppercase">
-              Raft Consensus
-            </p>
-            <p className="mt-4 text-[10px] tracking-[0.24em] text-text-faint uppercase">loading</p>
-          </div>
+          <p className="text-[15px] tracking-[0.01em] text-text-muted">loading...</p>
         </div>
       )}
     </>

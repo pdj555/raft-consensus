@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, Syne } from "next/font/google";
+import { IBM_Plex_Mono, Inter } from "next/font/google";
+import { brand } from "@/lib/brand";
 import "./globals.css";
 
-const syne = Syne({
-  variable: "--font-syne",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  weight: ["400", "500", "600"],
 });
 
 const ibmPlexMono = IBM_Plex_Mono({
@@ -15,13 +16,18 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Raft Consensus — Distributed Replication",
-  description:
-    "Modular Raft consensus in Java 21. Pure algorithm, Netty transport, memory-mapped storage.",
+  title: `${brand.project.name} — ${brand.person.name}`,
+  description: brand.project.tagline,
+  authors: [{ name: brand.person.name, url: brand.links.portfolio }],
+  creator: brand.person.name,
+  icons: {
+    icon: "/favicon.svg",
+  },
   openGraph: {
-    title: "Raft Consensus",
-    description: "Live cluster visualization and distributed replication research.",
+    title: brand.project.name,
+    description: `${brand.project.tagline} · ${brand.person.name}`,
     type: "website",
+    url: "https://raft-consensus-web.vercel.app",
   },
 };
 
@@ -31,12 +37,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${syne.variable} ${ibmPlexMono.variable} h-full`}>
-      <body className="min-h-full antialiased">
-        <div className="vignette" aria-hidden="true" />
-        <div className="grain" aria-hidden="true" />
-        {children}
-      </body>
+    <html lang="en" className={`${inter.variable} ${ibmPlexMono.variable} h-full`}>
+      <body className="min-h-full bg-bg font-sans antialiased">{children}</body>
     </html>
   );
 }

@@ -1,28 +1,45 @@
+import { brand } from "@/lib/brand";
+
 export function Footer() {
   return (
-    <footer className="border-t border-border py-10">
-      <div className="section-shell flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
+    <footer className="border-t border-border py-12">
+      <div className="section-shell flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <p className="font-display text-[13px] font-semibold text-text">Raft Consensus</p>
-          <p className="mt-1 text-[11px] text-text-faint">MIT · Java 21 · Modular distributed replication</p>
+          <p className="text-[15px] font-semibold tracking-[-0.02em] text-text">
+            {brand.person.name}
+          </p>
+          <p className="mt-2 text-[14px] text-text-muted">
+            {brand.person.role} ·{" "}
+            <a href={brand.links.email} className="transition-colors hover:text-text">
+              {brand.person.email}
+            </a>
+          </p>
+          <p className="mt-4 text-[13px] text-text-faint">
+            {brand.project.name} · MIT · Java 21
+          </p>
         </div>
-        <div className="flex flex-wrap gap-6">
+
+        <nav
+          aria-label="Footer links"
+          className="flex flex-wrap gap-x-5 gap-y-2 sm:justify-end"
+        >
           {[
-            ["GitHub", "https://github.com/pdj555/raft-consensus"],
-            ["Design", "https://github.com/pdj555/raft-consensus/blob/main/docs/design.md"],
-            ["Constitution", "https://github.com/pdj555/raft-consensus/blob/main/docs/constitution.md"],
+            ["Portfolio", brand.links.portfolio],
+            ["GitHub", brand.links.github],
+            ["LinkedIn", brand.links.linkedin],
+            ["Design", `${brand.links.repo}/blob/main/docs/design.md`],
           ].map(([label, href]) => (
             <a
               key={label}
               href={href}
               target="_blank"
               rel="noopener noreferrer"
-              className="label-caps text-text-muted transition-colors hover:text-text"
+              className="text-[14px] text-text-muted transition-colors hover:text-text"
             >
               {label}
             </a>
           ))}
-        </div>
+        </nav>
       </div>
     </footer>
   );
