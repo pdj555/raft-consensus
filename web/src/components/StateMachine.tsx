@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { SectionHeader } from "@/components/SectionHeader";
 
 const states = [
@@ -22,78 +22,95 @@ const states = [
     color: "var(--leader)",
     description: "Replicates log entries, advances commitIndex on majority.",
   },
-];
+] as const;
 
 const transitions = [
   { from: "follower", to: "candidate", trigger: "election timeout" },
   { from: "candidate", to: "leader", trigger: "majority votes" },
   { from: "candidate", to: "follower", trigger: "higher term discovered" },
   { from: "leader", to: "follower", trigger: "higher term in RPC" },
-];
+] as const;
+
+type StateId = (typeof states)[number]["id"];
 
 export function StateMachine() {
-  const [active, setActive] = useState("follower");
+  const [active, setActive] = useState<StateId>("follower");
+
+  const visibleTransitions = useMemo(
+    () => transitions.filter((t) => t.from === active || t.to === active),
+    [active],
+  );
 
   return (
-    <section id="protocol" className="section-pad border-t border-border">
+    <section id="protocol" className="section-anchor section-pad border-t border-border">
       <div className="section-shell">
         <SectionHeader
           label="Protocol"
           title="Raft state machine"
-          description="At most one leader per term. Safety properties from §5.4 — append-only, election safety, log matching."
+          description="One leader per term. Safety from §5.4 — append-only, election safety, log matching."
         />
 
-        <div className="grid gap-4 lg:grid-cols-2">
-          <div className="panel p-6">
-            <p className="label-caps mb-5">States</p>
-            <div className="flex flex-col gap-2">
-              {states.map((state) => (
-                <button
-                  key={state.id}
-                  type="button"
-                  onClick={() => setActive(state.id)}
-                  className={`flex items-start gap-4 rounded border px-4 py-3 text-left transition-all duration-200 ${
-                    active === state.id
-                      ? "border-border-bright bg-surface-raised"
-                      : "border-transparent hover:border-border hover:bg-bg-elevated"
-                  }`}
-                >
-                  <span
-                    className="mt-1 h-2 w-2 shrink-0 rounded-full"
-                    style={{ background: state.color }}
-                  />
-                  <div>
-                    <p className="text-[13px] font-medium text-text">{state.label}</p>
-                    <p className="mt-1 text-[11px] leading-relaxed text-text-muted">
-                      {state.description}
-                    </p>
-                  </div>
-                </button>
-              ))}
+        <div className="grid gap-3 lg:grid-cols-2">
+          <div className="panel p-5" role="tablist" aria-label="Raft states">
+            <p className="label-caps mb-4">States</p>
+            <div className="flex flex-col gap-1.5">
+              {states.map((state) => {
+                const selected = active === state.id;
+                return (
+                  <button
+                    key={state.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={selected}
+                    onClick={() => setActive(state.id)}
+                    className={`flex items-start gap-3 rounded border px-3.5 py-3 text-left transition-colors duration-200 ${
+                      selected
+                        ? "border-border-bright bg-surface-raised"
+                        : "border-transparent hover:border-border hover:bg-bg-elevated"
+                    }`}
+                  >
+                    <span
+                      className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full"
+                      style={{ background: state.color }}
+                      aria-hidden="true"
+                    />
+                    <div>
+                      <p className="text-[12px] font-medium text-text">{state.label}</p>
+                      <p className="mt-1 text-[11px] leading-relaxed text-text-muted">
+                        {state.description}
+                      </p>
+                    </div>
+                  </button>
+                );
+              })}
             </div>
           </div>
 
-          <div className="panel p-6">
-            <p className="label-caps mb-5">Transitions</p>
-            <div className="space-y-3">
-              {transitions.map((t) => (
+          <div className="panel p-5">
+            <p className="label-caps mb-4">
+              Transitions · <span className="text-text-faint">{active}</span>
+            </p>
+            <div className="space-y-2.5">
+              {visibleTransitions.map((t) => (
                 <div
                   key={`${t.from}-${t.to}`}
-                  className="flex items-center gap-2.5 border-b border-border/60 pb-3 text-[11px] last:border-0 last:pb-0"
+                  className="flex flex-wrap items-center gap-2 border-b border-border/60 pb-2.5 text-[11px] last:border-0 last:pb-0"
                 >
-                  <span className="rounded border border-border bg-bg-elevated px-2 py-1 capitalize text-text-muted">
+                  <span className="rounded border border-border bg-bg-elevated px-2 py-0.5 capitalize text-text-muted">
                     {t.from}
                   </span>
-                  <span className="text-text-faint">→</span>
-                  <span className="rounded border border-border bg-bg-elevated px-2 py-1 capitalize text-text-muted">
+                  <span className="text-text-faint" aria-hidden="true">
+                    →
+                  </span>
+                  <span className="rounded border border-border bg-bg-elevated px-2 py-0.5 capitalize text-text-muted">
                     {t.to}
                   </span>
-                  <span className="ml-auto text-text-faint">{t.trigger}</span>
+                  <span className="text-text-faint">{t.trigger}</span>
                 </div>
               ))}
             </div>
 
-            <div className="panel-inset mt-6 p-4 text-[11px] leading-relaxed text-text-muted">
+            <div className="panel-inset mt-5 p-3.5 text-[11px] leading-relaxed text-text-muted">
               <span className="text-accent/80">$</span> mvn test -DskipITs=true
               <br />
               <span className="text-text-faint">RaftLogTest · DefaultRaftNodeClusterTest</span>

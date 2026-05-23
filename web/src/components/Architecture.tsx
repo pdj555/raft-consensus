@@ -35,7 +35,7 @@ const modules = [
 
 export function Architecture() {
   return (
-    <section id="architecture" className="section-pad">
+    <section id="architecture" className="section-anchor section-pad bg-bg-elevated">
       <div className="section-shell">
         <SectionHeader
           label="Architecture"
@@ -61,7 +61,7 @@ export function Architecture() {
             >
               <div className="flex items-start justify-between gap-3">
                 <h3 className="text-[12px] font-medium text-accent-muted">{mod.name}</h3>
-                <span className="label-caps rounded-full border border-border px-2 py-0.5 text-[9px]">
+                <span className="label-caps rounded border border-border px-2 py-0.5 text-[9px]">
                   {mod.tag}
                 </span>
               </div>
@@ -73,8 +73,8 @@ export function Architecture() {
           ))}
         </div>
 
-        <div className="panel-inset mt-10 p-6">
-          <p className="label-caps mb-4">Quick start</p>
+        <div className="panel-inset mt-8 p-5">
+          <p className="label-caps mb-3">Quick start</p>
           <pre className="overflow-x-auto text-[11px] leading-[1.8] text-text-muted">
             <code>
               <span className="text-text-faint"># Clone and verify</span>

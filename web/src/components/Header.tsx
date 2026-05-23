@@ -4,12 +4,15 @@ import { useEffect, useState } from "react";
 import { BrandMark } from "@/components/BrandMark";
 import { brand } from "@/lib/brand";
 
-const links = [
+const primaryLinks = [
   { href: "#cluster", label: "Cluster" },
   { href: "#architecture", label: "Architecture" },
   { href: "#protocol", label: "Protocol" },
-  { href: brand.links.portfolio, label: "About", external: true },
-  { href: brand.links.repo, label: "GitHub", external: true },
+];
+
+const externalLinks = [
+  { href: brand.links.portfolio, label: "About" },
+  { href: brand.links.repo, label: "GitHub" },
 ];
 
 export function Header() {
@@ -24,9 +27,7 @@ export function Header() {
   }, []);
 
   useEffect(() => {
-    const sections = links
-      .filter((l) => !l.href.startsWith("http"))
-      .map((l) => document.querySelector(l.href));
+    const sections = primaryLinks.map((l) => document.querySelector(l.href));
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -35,7 +36,7 @@ export function Header() {
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
         if (visible?.target.id) setActive(visible.target.id);
       },
-      { rootMargin: "-42% 0px -48% 0px", threshold: [0, 0.2, 0.45] },
+      { rootMargin: "-40% 0px -50% 0px", threshold: [0, 0.15, 0.35] },
     );
 
     sections.forEach((s) => s && observer.observe(s));
@@ -48,8 +49,8 @@ export function Header() {
         scrolled ? "border-b border-border bg-bg/92 backdrop-blur-md" : "border-b border-transparent"
       }`}
     >
-      <div className="section-shell flex h-12 items-center justify-between">
-        <a href="#" className="group flex items-center gap-2.5">
+      <div className="section-shell flex h-12 items-center justify-between gap-3">
+        <a href="#main" className="group flex shrink-0 items-center gap-2.5">
           <BrandMark />
           <span className="font-display text-[12px] font-semibold tracking-[-0.03em] text-text">
             Raft
@@ -57,28 +58,42 @@ export function Header() {
           <span className="label-caps hidden text-text-faint sm:inline">consensus</span>
         </a>
 
-        <nav className="flex items-center">
-          {links.map((link) => {
-            const id = link.href.replace("#", "");
-            const isActive = !link.external && active === id;
-            return (
+        <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+          <nav
+            aria-label="Sections"
+            className="flex min-w-0 items-center overflow-x-auto scrollbar-hide"
+          >
+            {primaryLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                target={link.external ? "_blank" : undefined}
-                rel={link.external ? "noopener noreferrer" : undefined}
-                className={`label-caps relative px-2.5 py-1.5 transition-colors sm:px-3 ${
-                  isActive ? "text-text" : "text-text-muted hover:text-text"
-                }`}
+                data-active={active === link.href.slice(1) ? "true" : "false"}
+                className="nav-link label-caps px-2.5 py-1.5 text-text-muted transition-colors hover:text-text sm:px-3"
               >
                 {link.label}
-                {isActive && (
-                  <span className="absolute inset-x-2.5 -bottom-[7px] h-px bg-accent/50 sm:inset-x-3" />
-                )}
               </a>
-            );
-          })}
-        </nav>
+            ))}
+          </nav>
+
+          <span className="divider-v hidden h-3 shrink-0 sm:block" aria-hidden="true" />
+
+          <nav
+            aria-label="External links"
+            className="hidden shrink-0 items-center sm:flex"
+          >
+            {externalLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="nav-link label-caps px-2.5 py-1.5 text-text-faint transition-colors hover:text-text-muted sm:px-3"
+              >
+                {link.label}
+              </a>
+            ))}
+          </nav>
+        </div>
       </div>
     </header>
   );

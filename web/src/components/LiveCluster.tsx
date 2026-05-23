@@ -27,7 +27,7 @@ function RoleBadge({ role }: { role: NodeRole }) {
   const color = roleColor(role);
   return (
     <span
-      className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[9px] uppercase tracking-[0.14em]"
+      className="inline-flex items-center rounded px-2 py-0.5 text-[9px] uppercase tracking-[0.14em]"
       style={{
         color,
         background: `color-mix(in srgb, ${color} 10%, transparent)`,
@@ -117,7 +117,7 @@ function TopologyMap({
           return (
             <g
               key={node.id}
-              className="cursor-pointer"
+              className="cursor-pointer outline-none focus-visible:opacity-100"
               onClick={() => onSelect(node.id)}
               role="button"
               tabIndex={0}
@@ -252,9 +252,11 @@ function NodeCard({
     <button
       type="button"
       onClick={onSelect}
-      className={`panel-inset w-full p-3.5 text-left transition-colors duration-200 hover:border-border-bright ${
+      className={`panel-inset w-full p-3.5 text-left transition-colors duration-200 hover:border-border-bright focus-visible:border-border-bright ${
         isSelected ? "border-accent/15 bg-accent-dim" : ""
       } ${isLeader ? "border-leader/15" : ""}`}
+      aria-pressed={isSelected}
+      aria-label={`Select ${node.id}, ${node.role}`}
     >
       <div className="flex items-center justify-between gap-2">
         <p className="text-[11px] font-medium text-text">{node.id}</p>
@@ -293,14 +295,14 @@ export function LiveCluster() {
   );
 
   return (
-    <section id="cluster" className="border-b border-border bg-bg">
+    <section id="cluster" className="section-anchor border-b border-border bg-bg">
       <TelemetryStrip cluster={cluster} />
 
-      <div className="section-shell section-pad !pt-10">
+      <div className="section-shell section-pad-tight">
         <SectionHeader
           label="Live cluster"
           title="Five-node replication"
-          description="Leader election, AppendEntries replication, and commit advancement — simulated in real time."
+          description="Simulated leader election, log replication, and commit advancement."
         />
 
         <div className="dashboard-shell">
