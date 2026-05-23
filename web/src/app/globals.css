@@ -23,6 +23,7 @@
   --color-surface: var(--surface);
   --color-surface-raised: var(--surface-raised);
   --color-border: var(--border);
+  --color-border-bright: var(--border-bright);
   --color-text: var(--text);
   --color-text-muted: var(--text-muted);
   --color-text-faint: var(--text-faint);
@@ -204,6 +205,16 @@ body {
   animation: loading-bar 1.4s ease-in-out infinite;
 }
 
+.loading-overlay {
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.loading-overlay-out {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
 .event-flash {
   animation: event-flash 0.8s ease-out;
 }
@@ -212,8 +223,10 @@ body {
   .animate-fade-up,
   .animate-pulse-live,
   .loading-bar,
+  .loading-overlay,
   .event-flash {
     animation: none;
+    transition: none;
   }
 
   html {
