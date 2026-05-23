@@ -6,8 +6,8 @@ export function LoadingGate({ children }: { children: ReactNode }) {
   const [phase, setPhase] = useState<"loading" | "fading" | "done">("loading");
 
   useEffect(() => {
-    const fade = window.setTimeout(() => setPhase("fading"), 400);
-    const done = window.setTimeout(() => setPhase("done"), 850);
+    const fade = window.setTimeout(() => setPhase("fading"), 500);
+    const done = window.setTimeout(() => setPhase("done"), 950);
     return () => {
       window.clearTimeout(fade);
       window.clearTimeout(done);
@@ -19,17 +19,12 @@ export function LoadingGate({ children }: { children: ReactNode }) {
       {children}
       {phase !== "done" && (
         <div
-          className={`loading-overlay fixed inset-0 z-[100] flex flex-col items-center justify-center bg-bg ${
+          className={`loading-overlay fixed inset-0 z-[100] flex items-center justify-center bg-bg ${
             phase === "fading" ? "loading-overlay-out" : ""
           }`}
           aria-hidden={phase === "fading"}
         >
-          <p className="font-display text-[10px] font-medium tracking-[0.34em] text-text-muted uppercase">
-            Raft
-          </p>
-          <div className="relative mt-6 h-px w-24 overflow-hidden bg-border">
-            <span className="loading-scan absolute inset-y-0 w-1/2 bg-accent/40" />
-          </div>
+          <p className="text-[13px] tracking-[0.02em] text-text-muted">loading...</p>
         </div>
       )}
     </>

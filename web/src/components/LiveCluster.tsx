@@ -1,12 +1,10 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { SectionHeader } from "@/components/SectionHeader";
 import { Sparkline } from "@/components/Sparkline";
 import { TelemetryStrip } from "@/components/TelemetryStrip";
 import {
   createInitialCluster,
-  formatUptime,
   roleColor,
   tickCluster,
   type ClusterNode,
@@ -14,26 +12,16 @@ import {
   type NodeRole,
 } from "@/lib/raft-simulation";
 
-function MetricCell({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="px-4 py-3.5">
-      <p className="label-caps">{label}</p>
-      <p className="metric-value mt-1.5 text-xl font-medium text-text">{value}</p>
-    </div>
-  );
-}
-
 function RoleBadge({ role }: { role: NodeRole }) {
-  const color = roleColor(role);
+  const tone =
+    role === "leader"
+      ? "border-border-bright text-text"
+      : role === "candidate"
+        ? "border-border text-text-muted"
+        : "border-border text-text-faint";
+
   return (
-    <span
-      className="inline-flex items-center rounded px-2 py-0.5 text-[9px] uppercase tracking-[0.14em]"
-      style={{
-        color,
-        background: `color-mix(in srgb, ${color} 10%, transparent)`,
-        border: `1px solid color-mix(in srgb, ${color} 22%, transparent)`,
-      }}
-    >
+    <span className={`inline-flex border px-2 py-0.5 text-[9px] uppercase tracking-[0.14em] ${tone}`}>
       {role}
     </span>
   );
@@ -66,7 +54,7 @@ function TopologyMap({
       <svg viewBox="0 0 800 450" className="h-full w-full" aria-hidden="true">
         <defs>
           <pattern id="topo-dots" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
-            <circle cx="1" cy="1" r="0.35" fill="rgba(255,255,255,0.045)" />
+            <circle cx="1" cy="1" r="0.35" fill="rgba(255,255,255,0.08)" />
           </pattern>
         </defs>
         <rect width="800" height="450" fill="url(#topo-dots)" />
@@ -81,8 +69,8 @@ function TopologyMap({
               const b = nodeCoords(follower);
               return (
                 <g key={`pulse-${follower.id}-${pulseKey}`}>
-                  <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="rgba(196,146,40,0.07)" strokeWidth="0.75" />
-                  <circle r="2" fill="var(--leader)" opacity="0.75">
+                  <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="rgba(255,255,255,0.12)" strokeWidth="0.75" />
+                  <circle r="2" fill="var(--text)" opacity="0.6">
                     <animateMotion dur="2s" repeatCount="1" path={`M ${a.x} ${a.y} L ${b.x} ${b.y}`} />
                     <animate attributeName="opacity" values="0;0.9;0.9;0" dur="2s" repeatCount="1" />
                   </circle>
@@ -102,7 +90,7 @@ function TopologyMap({
                 y1={a.y}
                 x2={b.x}
                 y2={b.y}
-                stroke={linked ? "rgba(196,146,40,0.1)" : "rgba(74,136,184,0.04)"}
+                stroke={linked ? "rgba(255,255,255,0.16)" : "rgba(255,255,255,0.05)"}
                 strokeWidth={linked ? 1 : 0.5}
               />
             );
@@ -253,8 +241,8 @@ function NodeCard({
       type="button"
       onClick={onSelect}
       className={`panel-inset w-full p-3.5 text-left transition-colors duration-200 hover:border-border-bright focus-visible:border-border-bright ${
-        isSelected ? "border-accent/15 bg-accent-dim" : ""
-      } ${isLeader ? "border-leader/15" : ""}`}
+        isSelected ? "border-border-bright bg-accent-dim" : ""
+      } ${isLeader ? "border-border-bright" : ""}`}
       aria-pressed={isSelected}
       aria-label={`Select ${node.id}, ${node.role}`}
     >
@@ -295,29 +283,26 @@ export function LiveCluster() {
   );
 
   return (
-    <section id="cluster" className="section-anchor border-b border-border bg-bg">
+    <section id="cluster" className="section-anchor bg-bg">
+      <div className="section-shell border-b border-border pt-16 pb-5">
+        <p className="label-caps">Raft consensus</p>
+        <h1 className="mt-3 font-display text-[clamp(1.75rem,4vw,2.75rem)] font-semibold tracking-[-0.04em] text-text">
+          Distributed replication
+        </h1>
+        <p className="mt-3 max-w-xl text-[11px] leading-relaxed text-text-muted">
+          Pure Raft in Java 21 — leader election, log replication, and commit advancement.
+        </p>
+      </div>
+
       <TelemetryStrip cluster={cluster} />
 
-      <div className="section-shell section-pad-tight">
-        <SectionHeader
-          label="Live cluster"
-          title="Five-node replication"
-          description="Simulated leader election, log replication, and commit advancement."
-        />
-
+      <div className="section-shell py-6">
         <div className="dashboard-shell">
-          <div className="grid divide-y divide-border sm:grid-cols-2 lg:grid-cols-4 lg:divide-x lg:divide-y-0">
-            <MetricCell label="Term" value={String(cluster.term)} />
-            <MetricCell label="Commit index" value={cluster.commitIndex.toLocaleString()} />
-            <MetricCell label="Last applied" value={cluster.lastApplied.toLocaleString()} />
-            <MetricCell label="Uptime" value={formatUptime(cluster.uptimeSec)} />
-          </div>
-
           <div className="grid divide-y divide-border lg:grid-cols-2 lg:divide-x lg:divide-y-0">
             <Sparkline
               label="Throughput"
               data={cluster.opsHistory}
-              color="var(--accent)"
+              color="var(--text)"
               value={cluster.opsPerSec.toLocaleString()}
               unit="ops/s"
               min={500}
@@ -326,7 +311,7 @@ export function LiveCluster() {
             <Sparkline
               label="Replication lag"
               data={cluster.lagHistory}
-              color="var(--leader)"
+              color="var(--text-muted)"
               value={String(cluster.replicationLagMs)}
               unit="ms"
               min={0}

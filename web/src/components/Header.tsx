@@ -28,7 +28,6 @@ export function Header() {
 
   useEffect(() => {
     const sections = primaryLinks.map((l) => document.querySelector(l.href));
-
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries
@@ -38,24 +37,20 @@ export function Header() {
       },
       { rootMargin: "-40% 0px -50% 0px", threshold: [0, 0.15, 0.35] },
     );
-
     sections.forEach((s) => s && observer.observe(s));
     return () => observer.disconnect();
   }, []);
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-40 transition-[background,border-color] duration-300 ${
-        scrolled ? "border-b border-border bg-bg/92 backdrop-blur-md" : "border-b border-transparent"
+      className={`fixed inset-x-0 top-0 z-40 border-b transition-colors duration-300 ${
+        scrolled ? "border-border bg-bg" : "border-transparent bg-bg/80"
       }`}
     >
       <div className="section-shell flex h-12 items-center justify-between gap-3">
-        <a href="#main" className="group flex shrink-0 items-center gap-2.5">
+        <a href="#main" className="flex shrink-0 items-center gap-2.5">
           <BrandMark />
-          <span className="font-display text-[12px] font-semibold tracking-[-0.03em] text-text">
-            Raft
-          </span>
-          <span className="label-caps hidden text-text-faint sm:inline">consensus</span>
+          <span className="label-caps text-text">Raft</span>
         </a>
 
         <div className="flex min-w-0 items-center gap-2 sm:gap-3">
@@ -68,7 +63,7 @@ export function Header() {
                 key={link.href}
                 href={link.href}
                 data-active={active === link.href.slice(1) ? "true" : "false"}
-                className="nav-link label-caps px-2.5 py-1.5 text-text-muted transition-colors hover:text-text sm:px-3"
+                className="nav-link label-caps px-2 py-1.5 text-text-muted transition-colors hover:text-text sm:px-3"
               >
                 {link.label}
               </a>
@@ -77,17 +72,14 @@ export function Header() {
 
           <span className="divider-v hidden h-3 shrink-0 sm:block" aria-hidden="true" />
 
-          <nav
-            aria-label="External links"
-            className="hidden shrink-0 items-center sm:flex"
-          >
+          <nav aria-label="External links" className="hidden shrink-0 items-center sm:flex">
             {externalLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="nav-link label-caps px-2.5 py-1.5 text-text-faint transition-colors hover:text-text-muted sm:px-3"
+                className="nav-link label-caps px-2 py-1.5 text-text-faint transition-colors hover:text-text-muted sm:px-3"
               >
                 {link.label}
               </a>

@@ -63,7 +63,7 @@ export function StateMachine() {
                     role="tab"
                     aria-selected={selected}
                     onClick={() => setActive(state.id)}
-                    className={`flex items-start gap-3 rounded border px-3.5 py-3 text-left transition-colors duration-200 ${
+                    className={`flex items-start gap-3 border px-3.5 py-3 text-left transition-colors duration-200 ${
                       selected
                         ? "border-border-bright bg-surface-raised"
                         : "border-transparent hover:border-border hover:bg-bg-elevated"
@@ -96,13 +96,13 @@ export function StateMachine() {
                   key={`${t.from}-${t.to}`}
                   className="flex flex-wrap items-center gap-2 border-b border-border/60 pb-2.5 text-[11px] last:border-0 last:pb-0"
                 >
-                  <span className="rounded border border-border bg-bg-elevated px-2 py-0.5 capitalize text-text-muted">
+                  <span className="border border-border bg-bg-elevated px-2 py-0.5 capitalize text-text-muted">
                     {t.from}
                   </span>
                   <span className="text-text-faint" aria-hidden="true">
                     →
                   </span>
-                  <span className="rounded border border-border bg-bg-elevated px-2 py-0.5 capitalize text-text-muted">
+                  <span className="border border-border bg-bg-elevated px-2 py-0.5 capitalize text-text-muted">
                     {t.to}
                   </span>
                   <span className="text-text-faint">{t.trigger}</span>
@@ -111,7 +111,7 @@ export function StateMachine() {
             </div>
 
             <div className="panel-inset mt-5 p-3.5 text-[11px] leading-relaxed text-text-muted">
-              <span className="text-accent/80">$</span> mvn test -DskipITs=true
+              <span className="text-text-faint">$</span> mvn test -DskipITs=true
               <br />
               <span className="text-text-faint">RaftLogTest · DefaultRaftNodeClusterTest</span>
             </div>

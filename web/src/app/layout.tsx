@@ -38,12 +38,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${syne.variable} ${ibmPlexMono.variable} h-full`}>
-      <body className="min-h-full antialiased">
-        <div className="ambient" aria-hidden="true" />
-        <div className="vignette" aria-hidden="true" />
-        <div className="grain" aria-hidden="true" />
-        {children}
-      </body>
+      <body className="min-h-full bg-bg antialiased">{children}</body>
     </html>
   );
 }
