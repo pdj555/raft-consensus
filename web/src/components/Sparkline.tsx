@@ -17,12 +17,13 @@ export function Sparkline({
   min,
   max,
 }: SparklineProps) {
-  const lo = min ?? Math.min(...data) * 0.9;
-  const hi = max ?? Math.max(...data) * 1.1;
+  const lo = min ?? Math.min(...data) * 0.92;
+  const hi = max ?? Math.max(...data) * 1.08;
   const range = hi - lo || 1;
-  const w = 280;
-  const h = 56;
-  const pad = 2;
+  const w = 320;
+  const h = 48;
+  const pad = 1;
+  const id = label.replace(/\s+/g, "-").toLowerCase();
 
   const points = data
     .map((v, i) => {
@@ -32,37 +33,35 @@ export function Sparkline({
     })
     .join(" ");
 
-  const area = `${pad},${h - pad} ${points} ${w - pad},${h - pad}`;
+  const area = `${pad},${h} ${points} ${w - pad},${h}`;
 
   return (
-    <div className="panel flex flex-col rounded p-4">
-      <div className="flex items-start justify-between gap-2">
+    <div className="px-5 py-4">
+      <div className="flex items-baseline justify-between gap-3">
         <p className="label-caps">{label}</p>
-        <p className="metric-value text-right text-lg font-semibold text-text">
+        <p className="metric-value text-lg font-medium text-text">
           {value}
-          {unit && (
-            <span className="ml-1 text-[10px] font-normal text-text-muted">{unit}</span>
-          )}
+          {unit && <span className="ml-1 text-[10px] text-text-muted">{unit}</span>}
         </p>
       </div>
       <svg
         viewBox={`0 0 ${w} ${h}`}
-        className="mt-3 h-14 w-full"
+        className="mt-3 h-12 w-full opacity-90"
         preserveAspectRatio="none"
         aria-hidden="true"
       >
         <defs>
-          <linearGradient id={`grad-${label}`} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor={color} stopOpacity="0.25" />
+          <linearGradient id={`spark-${id}`} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor={color} stopOpacity="0.18" />
             <stop offset="100%" stopColor={color} stopOpacity="0" />
           </linearGradient>
         </defs>
-        <polygon points={area} fill={`url(#grad-${label})`} />
+        <polygon points={area} fill={`url(#spark-${id})`} />
         <polyline
           points={points}
           fill="none"
           stroke={color}
-          strokeWidth="1.5"
+          strokeWidth="1.25"
           strokeLinejoin="round"
           strokeLinecap="round"
           vectorEffect="non-scaling-stroke"

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { SectionHeader } from "@/components/SectionHeader";
 
 const states = [
   {
@@ -34,44 +35,36 @@ export function StateMachine() {
   const [active, setActive] = useState("follower");
 
   return (
-    <section id="protocol" className="border-t border-border py-20">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="mb-12 max-w-2xl">
-          <p className="label-caps mb-2">Protocol</p>
-          <h2
-            className="text-3xl font-bold tracking-tight text-text sm:text-4xl"
-            style={{ fontFamily: "var(--font-syne)" }}
-          >
-            Raft state machine
-          </h2>
-          <p className="mt-4 text-sm leading-relaxed text-text-muted">
-            At most one leader per term. Safety properties from §5.4 — leader
-            append-only, election safety, log matching, leader completeness.
-          </p>
-        </div>
+    <section id="protocol" className="section-pad border-t border-border">
+      <div className="section-shell">
+        <SectionHeader
+          label="Protocol"
+          title="Raft state machine"
+          description="At most one leader per term. Safety properties from §5.4 — append-only, election safety, log matching."
+        />
 
-        <div className="grid gap-8 lg:grid-cols-2">
-          <div className="panel rounded p-6">
-            <p className="label-caps mb-6">States</p>
-            <div className="flex flex-col gap-3">
+        <div className="grid gap-4 lg:grid-cols-2">
+          <div className="panel p-6">
+            <p className="label-caps mb-5">States</p>
+            <div className="flex flex-col gap-2">
               {states.map((state) => (
                 <button
                   key={state.id}
                   type="button"
                   onClick={() => setActive(state.id)}
-                  className={`flex items-start gap-4 rounded border p-4 text-left transition-all ${
+                  className={`flex items-start gap-4 rounded-[10px] border px-4 py-3.5 text-left transition-all duration-200 ${
                     active === state.id
-                      ? "border-border-bright bg-white/[0.03]"
-                      : "border-transparent hover:border-border hover:bg-white/[0.02]"
+                      ? "border-border-bright bg-white/[0.025]"
+                      : "border-transparent hover:border-border hover:bg-white/[0.015]"
                   }`}
                 >
                   <span
-                    className="mt-1 h-3 w-3 shrink-0 rounded-full"
+                    className="mt-1 h-2 w-2 shrink-0 rounded-full"
                     style={{ background: state.color }}
                   />
                   <div>
-                    <p className="text-sm font-medium text-text">{state.label}</p>
-                    <p className="mt-1 text-xs leading-relaxed text-text-muted">
+                    <p className="text-[13px] font-medium text-text">{state.label}</p>
+                    <p className="mt-1 text-[11px] leading-relaxed text-text-muted">
                       {state.description}
                     </p>
                   </div>
@@ -80,44 +73,30 @@ export function StateMachine() {
             </div>
           </div>
 
-          <div className="panel rounded p-6">
-            <p className="label-caps mb-6">Transitions</p>
-            <div className="space-y-4">
+          <div className="panel p-6">
+            <p className="label-caps mb-5">Transitions</p>
+            <div className="space-y-3">
               {transitions.map((t) => (
                 <div
-                  key={`${t.from}-${t.to}-${t.trigger}`}
-                  className="flex items-center gap-3 text-xs"
+                  key={`${t.from}-${t.to}`}
+                  className="flex items-center gap-2.5 border-b border-border/60 pb-3 text-[11px] last:border-0 last:pb-0"
                 >
-                  <span
-                    className="rounded px-2 py-1 capitalize"
-                    style={{
-                      color: states.find((s) => s.id === t.from)?.color,
-                      background: "rgba(255,255,255,0.04)",
-                    }}
-                  >
+                  <span className="rounded-md bg-white/[0.04] px-2 py-1 capitalize text-text-muted">
                     {t.from}
                   </span>
-                  <span className="text-text-muted">→</span>
-                  <span
-                    className="rounded px-2 py-1 capitalize"
-                    style={{
-                      color: states.find((s) => s.id === t.to)?.color,
-                      background: "rgba(255,255,255,0.04)",
-                    }}
-                  >
+                  <span className="text-text-faint">→</span>
+                  <span className="rounded-md bg-white/[0.04] px-2 py-1 capitalize text-text-muted">
                     {t.to}
                   </span>
-                  <span className="ml-auto text-text-muted">{t.trigger}</span>
+                  <span className="ml-auto text-text-faint">{t.trigger}</span>
                 </div>
               ))}
             </div>
 
-            <div className="mt-8 rounded border border-border bg-bg p-4 font-mono text-[11px] leading-relaxed text-text-muted">
-              <span className="text-accent">$</span> mvn test -DskipITs=true
+            <div className="panel-inset mt-6 p-4 text-[11px] leading-relaxed text-text-muted">
+              <span className="text-accent/80">$</span> mvn test -DskipITs=true
               <br />
-              <span className="text-text-muted/60">
-                Running RaftLogTest, DefaultRaftNodeClusterTest...
-              </span>
+              <span className="text-text-faint">RaftLogTest · DefaultRaftNodeClusterTest</span>
             </div>
           </div>
         </div>

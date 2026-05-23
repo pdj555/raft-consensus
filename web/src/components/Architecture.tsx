@@ -1,3 +1,5 @@
+import { SectionHeader } from "@/components/SectionHeader";
+
 const modules = [
   {
     name: "raft-core",
@@ -33,79 +35,57 @@ const modules = [
 
 export function Architecture() {
   return (
-    <section id="architecture" className="border-t border-border py-20">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="mb-12 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-          <div className="max-w-2xl">
-            <p className="label-caps mb-2">Architecture</p>
-            <h2
-              className="text-3xl font-bold tracking-tight text-text sm:text-4xl"
-              style={{ fontFamily: "var(--font-syne)" }}
+    <section id="architecture" className="section-pad">
+      <div className="section-shell">
+        <SectionHeader
+          label="Architecture"
+          title="Modular by design"
+          description="raft-core stays free of sockets and disk. Transport and storage plug in at the edges."
+          aside={
+            <a
+              href="https://github.com/pdj555/raft-consensus/blob/main/docs/design.md"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="label-caps shrink-0 rounded-md border border-border px-4 py-2 text-text-muted transition-colors hover:border-border-bright hover:text-text"
             >
-              Modular by design
-            </h2>
-            <p className="mt-4 text-sm leading-relaxed text-text-muted">
-              raft-core stays free of sockets and disk. Transport and storage plug
-              in at the edges. Virtual threads and Disruptor ring buffers on the hot path.
-            </p>
-          </div>
-          <a
-            href="https://github.com/pdj555/raft-consensus/blob/main/docs/design.md"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="label-caps shrink-0 self-start rounded border border-border px-4 py-2 transition-colors hover:border-border-bright hover:text-text lg:self-auto"
-          >
-            Read design doc →
-          </a>
-        </div>
+              Design doc →
+            </a>
+          }
+        />
 
         <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-          {modules.map((mod, i) => (
+          {modules.map((mod) => (
             <article
               key={mod.name}
-              className="panel group relative overflow-hidden rounded p-5 transition-colors hover:border-border-bright"
-              style={{ animationDelay: `${i * 0.05}s` }}
+              className="panel group p-5 transition-colors duration-200 hover:border-border-bright"
             >
-              <div className="flex items-start justify-between gap-2">
-                <h3 className="font-mono text-sm font-medium text-accent">
-                  {mod.name}
-                </h3>
-                <span className="label-caps rounded border border-border px-2 py-0.5">
+              <div className="flex items-start justify-between gap-3">
+                <h3 className="text-[13px] font-medium text-accent">{mod.name}</h3>
+                <span className="label-caps rounded-full border border-border px-2 py-0.5 text-[9px]">
                   {mod.tag}
                 </span>
               </div>
-              <p className="mt-3 text-xs leading-relaxed text-text-muted">
-                {mod.description}
-              </p>
+              <p className="mt-3 text-[12px] leading-relaxed text-text-muted">{mod.description}</p>
               {mod.deps.length > 0 && (
-                <p className="mt-4 text-[10px] text-text-muted/70">
-                  → {mod.deps.join(", ")}
-                </p>
+                <p className="mt-4 text-[10px] text-text-faint">depends on {mod.deps.join(", ")}</p>
               )}
-              <div
-                className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full opacity-0 blur-2xl transition-opacity group-hover:opacity-100"
-                style={{ background: "rgba(184,255,60,0.08)" }}
-              />
             </article>
           ))}
         </div>
 
-        <div className="mt-12 panel rounded p-6">
+        <div className="panel-inset mt-10 p-6">
           <p className="label-caps mb-4">Quick start</p>
-          <pre className="overflow-x-auto text-[11px] leading-relaxed text-text-muted">
+          <pre className="overflow-x-auto text-[11px] leading-[1.8] text-text-muted">
             <code>
-              <span className="text-text-muted/50"># Clone and verify</span>
+              <span className="text-text-faint"># Clone and verify</span>
               {"\n"}
-              <span className="text-accent">$</span> git clone
-              https://github.com/pdj555/raft-consensus.git
+              <span className="text-accent/80">$</span> git clone https://github.com/pdj555/raft-consensus.git
               {"\n"}
-              <span className="text-accent">$</span> cd raft-consensus
-              {"\n"}
-              <span className="text-accent">$</span> mvn clean verify
+              <span className="text-accent/80">$</span> cd raft-consensus && mvn clean verify
               {"\n\n"}
-              <span className="text-text-muted/50"># Fast unit pass</span>
+              <span className="text-text-faint"># Fast unit pass</span>
               {"\n"}
-              <span className="text-accent">$</span> mvn test -DskipITs=true
+              <span className="text-accent/80">$</span> mvn test -DskipITs=true
             </code>
           </pre>
         </div>

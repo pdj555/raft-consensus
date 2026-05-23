@@ -5,13 +5,13 @@ import "./globals.css";
 const syne = Syne({
   variable: "--font-syne",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["500", "600", "700"],
 });
 
 const ibmPlexMono = IBM_Plex_Mono({
   variable: "--font-ibm-plex-mono",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "500"],
 });
 
 export const metadata: Metadata = {
@@ -33,6 +33,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${syne.variable} ${ibmPlexMono.variable} h-full`}>
       <body className="min-h-full antialiased">
+        <div className="vignette" aria-hidden="true" />
         <div className="grain" aria-hidden="true" />
         {children}
       </body>
