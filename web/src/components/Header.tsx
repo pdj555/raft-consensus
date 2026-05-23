@@ -17,7 +17,7 @@ export function Header() {
   const [active, setActive] = useState("cluster");
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => setScrolled(window.scrollY > 4);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -44,28 +44,20 @@ export function Header() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-40 transition-[background,border-color] duration-500 ${
-        scrolled ? "border-b border-border bg-bg/90 backdrop-blur-xl" : "border-b border-transparent bg-transparent"
+      className={`fixed inset-x-0 top-0 z-40 transition-[background,border-color] duration-300 ${
+        scrolled ? "border-b border-border bg-bg/92 backdrop-blur-md" : "border-b border-transparent"
       }`}
     >
-      <div className="section-shell flex h-[3.25rem] items-center justify-between">
-        <a href="#" className="group flex items-center gap-3">
+      <div className="section-shell flex h-12 items-center justify-between">
+        <a href="#" className="group flex items-center gap-2.5">
           <BrandMark />
-          <span className="flex flex-col gap-0.5">
-            <span className="flex items-center gap-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-live" />
-              <span className="font-display text-[13px] font-semibold tracking-[-0.02em] text-text">
-                Raft
-              </span>
-              <span className="label-caps hidden text-text-faint sm:inline">consensus</span>
-            </span>
-            <span className="label-caps hidden text-[9px] text-text-faint transition-colors group-hover:text-text-muted lg:inline">
-              {brand.person.name}
-            </span>
+          <span className="font-display text-[12px] font-semibold tracking-[-0.03em] text-text">
+            Raft
           </span>
+          <span className="label-caps hidden text-text-faint sm:inline">consensus</span>
         </a>
 
-        <nav className="flex items-center gap-1">
+        <nav className="flex items-center">
           {links.map((link) => {
             const id = link.href.replace("#", "");
             const isActive = !link.external && active === id;
@@ -75,13 +67,13 @@ export function Header() {
                 href={link.href}
                 target={link.external ? "_blank" : undefined}
                 rel={link.external ? "noopener noreferrer" : undefined}
-                className={`label-caps relative rounded-md px-3 py-1.5 transition-colors ${
+                className={`label-caps relative px-2.5 py-1.5 transition-colors sm:px-3 ${
                   isActive ? "text-text" : "text-text-muted hover:text-text"
                 }`}
               >
                 {link.label}
                 {isActive && (
-                  <span className="absolute inset-x-3 -bottom-[9px] h-px bg-accent/70" />
+                  <span className="absolute inset-x-2.5 -bottom-[7px] h-px bg-accent/50 sm:inset-x-3" />
                 )}
               </a>
             );

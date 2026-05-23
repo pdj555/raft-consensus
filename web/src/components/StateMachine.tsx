@@ -52,10 +52,10 @@ export function StateMachine() {
                   key={state.id}
                   type="button"
                   onClick={() => setActive(state.id)}
-                  className={`flex items-start gap-4 rounded-[10px] border px-4 py-3.5 text-left transition-all duration-200 ${
+                  className={`flex items-start gap-4 rounded border px-4 py-3 text-left transition-all duration-200 ${
                     active === state.id
-                      ? "border-border-bright bg-white/[0.025]"
-                      : "border-transparent hover:border-border hover:bg-white/[0.015]"
+                      ? "border-border-bright bg-surface-raised"
+                      : "border-transparent hover:border-border hover:bg-bg-elevated"
                   }`}
                 >
                   <span
@@ -81,11 +81,11 @@ export function StateMachine() {
                   key={`${t.from}-${t.to}`}
                   className="flex items-center gap-2.5 border-b border-border/60 pb-3 text-[11px] last:border-0 last:pb-0"
                 >
-                  <span className="rounded-md bg-white/[0.04] px-2 py-1 capitalize text-text-muted">
+                  <span className="rounded border border-border bg-bg-elevated px-2 py-1 capitalize text-text-muted">
                     {t.from}
                   </span>
                   <span className="text-text-faint">→</span>
-                  <span className="rounded-md bg-white/[0.04] px-2 py-1 capitalize text-text-muted">
+                  <span className="rounded border border-border bg-bg-elevated px-2 py-1 capitalize text-text-muted">
                     {t.to}
                   </span>
                   <span className="ml-auto text-text-faint">{t.trigger}</span>

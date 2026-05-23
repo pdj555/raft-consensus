@@ -16,9 +16,9 @@ import {
 
 function MetricCell({ label, value }: { label: string; value: string }) {
   return (
-    <div className="px-5 py-4">
+    <div className="px-4 py-3.5">
       <p className="label-caps">{label}</p>
-      <p className="metric-value mt-2 text-2xl font-medium text-text">{value}</p>
+      <p className="metric-value mt-1.5 text-xl font-medium text-text">{value}</p>
     </div>
   );
 }
@@ -66,7 +66,7 @@ function TopologyMap({
       <svg viewBox="0 0 800 450" className="h-full w-full" aria-hidden="true">
         <defs>
           <pattern id="topo-dots" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
-            <circle cx="1" cy="1" r="0.4" fill="rgba(255,255,255,0.08)" />
+            <circle cx="1" cy="1" r="0.35" fill="rgba(255,255,255,0.045)" />
           </pattern>
         </defs>
         <rect width="800" height="450" fill="url(#topo-dots)" />
@@ -81,8 +81,8 @@ function TopologyMap({
               const b = nodeCoords(follower);
               return (
                 <g key={`pulse-${follower.id}-${pulseKey}`}>
-                  <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="rgba(232,168,48,0.1)" strokeWidth="0.75" />
-                  <circle r="2.5" fill="var(--leader)" opacity="0.9">
+                  <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="rgba(196,146,40,0.07)" strokeWidth="0.75" />
+                  <circle r="2" fill="var(--leader)" opacity="0.75">
                     <animateMotion dur="2s" repeatCount="1" path={`M ${a.x} ${a.y} L ${b.x} ${b.y}`} />
                     <animate attributeName="opacity" values="0;0.9;0.9;0" dur="2s" repeatCount="1" />
                   </circle>
@@ -102,7 +102,7 @@ function TopologyMap({
                 y1={a.y}
                 x2={b.x}
                 y2={b.y}
-                stroke={linked ? "rgba(232,168,48,0.14)" : "rgba(90,159,212,0.05)"}
+                stroke={linked ? "rgba(196,146,40,0.1)" : "rgba(74,136,184,0.04)"}
                 strokeWidth={linked ? 1 : 0.5}
               />
             );
@@ -142,7 +142,7 @@ function TopologyMap({
                 x={x}
                 y={y + 18}
                 textAnchor="middle"
-                fill={isSelected ? "var(--accent)" : "rgba(236,236,241,0.5)"}
+                fill={isSelected ? "var(--accent-muted)" : "rgba(210,210,218,0.42)"}
                 fontSize="8.5"
                 fontFamily="monospace"
               >
@@ -252,9 +252,9 @@ function NodeCard({
     <button
       type="button"
       onClick={onSelect}
-      className={`panel-inset w-full p-4 text-left transition-colors duration-200 hover:border-border-bright ${
-        isSelected ? "border-accent/25 bg-accent/[0.03]" : ""
-      } ${isLeader ? "border-leader/20" : ""}`}
+      className={`panel-inset w-full p-3.5 text-left transition-colors duration-200 hover:border-border-bright ${
+        isSelected ? "border-accent/15 bg-accent-dim" : ""
+      } ${isLeader ? "border-leader/15" : ""}`}
     >
       <div className="flex items-center justify-between gap-2">
         <p className="text-[11px] font-medium text-text">{node.id}</p>
@@ -296,7 +296,7 @@ export function LiveCluster() {
     <section id="cluster" className="border-b border-border bg-bg">
       <TelemetryStrip cluster={cluster} />
 
-      <div className="section-shell section-pad !pt-12">
+      <div className="section-shell section-pad !pt-10">
         <SectionHeader
           label="Live cluster"
           title="Five-node replication"

@@ -15,20 +15,20 @@ export function TelemetryStrip({ cluster }: { cluster: ClusterSnapshot }) {
   const leader = cluster.nodes.find((n) => n.id === cluster.leaderId)?.id;
 
   return (
-    <div className="sticky top-[3.25rem] z-30 border-b border-border bg-bg/85 backdrop-blur-xl">
-      <div className="section-shell flex items-center gap-4 overflow-x-auto py-2.5 scrollbar-hide">
-        <span className="flex shrink-0 items-center gap-2 pr-2 text-[10px] uppercase tracking-[0.18em] text-live">
+    <div className="sticky top-12 z-30 border-b border-border bg-bg/94 backdrop-blur-md">
+      <div className="section-shell flex items-center gap-3 overflow-x-auto py-2 scrollbar-hide sm:gap-4">
+        <span className="flex shrink-0 items-center gap-2 pr-1 text-[9px] uppercase tracking-[0.2em] text-live">
           <span className="h-1 w-1 rounded-full bg-live animate-pulse-live" />
           Live
         </span>
         {items(cluster, leader).map((item, i) => (
-          <span key={item.label} className="flex shrink-0 items-center gap-4">
-            {i > 0 && <span className="divider-v h-3" />}
-            <span className="flex items-center gap-2 text-[10px] uppercase tracking-[0.16em] text-text-faint">
+          <span key={item.label} className="flex shrink-0 items-center gap-3 sm:gap-4">
+            {i > 0 && <span className="divider-v h-2.5" />}
+            <span className="flex items-center gap-2 text-[9px] uppercase tracking-[0.18em] text-text-faint">
               {item.label}
               <span
-                className={`metric-value text-[11px] normal-case tracking-normal ${
-                  item.accent ? "text-accent" : "text-text"
+                className={`metric-value text-[10px] normal-case tracking-normal ${
+                  item.accent ? "text-accent-muted" : "text-text-muted"
                 }`}
               >
                 {item.value}
